@@ -4,12 +4,12 @@
 
 ![USBCAN-101](https://user-images.githubusercontent.com/6020549/86522282-7bd2b600-be96-11ea-9bc7-cd969265ca2c.jpg)
 
-![USBCAN-103](https://user-images.githubusercontent.com/6020549/86522284-7d03e300-be96-11ea-9a71-bfe95f4aa9ad.jpg)
+![USBCAN-103](https://user-images.githubusercontent.com/6020549/86522284-7d03e300-be96-11ea-9a71-bfe95f4aa9ad.jpg)   
 COM bps only supports 115200.   
 
 ![USBCAN-105](https://user-images.githubusercontent.com/6020549/86522285-7e351000-be96-11ea-8ffa-2d1fab7b71b8.jpg)
 
-![USBCAN-107](https://user-images.githubusercontent.com/6020549/86522276-76756b80-be96-11ea-9075-be3b210b99a8.jpg)
+![USBCAN-107](https://user-images.githubusercontent.com/6020549/86522276-76756b80-be96-11ea-9075-be3b210b99a8.jpg)   
 Mode: This is not supported.   
 Only send once: This is not supported.   
 Manual set bps: This is not supported.   
