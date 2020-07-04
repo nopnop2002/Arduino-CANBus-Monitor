@@ -98,3 +98,8 @@ Display only valid IDs.
 
 ![USBCAN-613](https://user-images.githubusercontent.com/6020549/86522690-d838d400-be9c-11ea-8121-4b99af4d5f8b.jpg)   
 
+## Grid control
+![USBCAN-701](https://user-images.githubusercontent.com/6020549/86522723-49788700-be9d-11ea-99f6-3f0bcb08dd98.jpg)   
+
+![USBCAN-703](https://user-images.githubusercontent.com/6020549/86522724-4aa9b400-be9d-11ea-9a31-1f2a9a0dfbc7.jpg)   
+
