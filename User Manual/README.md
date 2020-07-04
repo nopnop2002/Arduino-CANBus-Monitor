@@ -28,11 +28,10 @@ CAN baud rate: Some do not support it.
 - [x] 5K   
 
 
+![USBCAN-109](https://user-images.githubusercontent.com/6020549/86522277-77a69880-be96-11ea-973e-b95e48cb3618.jpg)   
 Filter ID and Mask ID: Hexadecimal data filtering the IDs and Mask ID.   
 For Standard frame, the lower 11 bits are valid (range: 0x00000000 to 0x000007ff).   
 For Extended frames, 29 bits are valid (range 0x00000000 to 0x1fffffff).   
-
-![USBCAN-109](https://user-images.githubusercontent.com/6020549/86522277-77a69880-be96-11ea-973e-b95e48cb3618.jpg)   
 
 ![USBCAN-111](https://user-images.githubusercontent.com/6020549/86522278-79705c00-be96-11ea-81fe-752da5dd8946.jpg)   
 
