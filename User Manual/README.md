@@ -26,6 +26,8 @@ CAN baud rate: Some do not support it.
 - [x] 20K   
 - [x] 10K   
 - [x] 5K   
+
+<br>
 Filter ID and Mask ID: Hexadecimal data filtering the IDs and Mask ID.   
 For Standard frame, the lower 11 bits are valid (range: 0x00000000 to 0x000007ff).   
 For Extended frames, 29 bits are valid (range 0x00000000 to 0x1fffffff).   
