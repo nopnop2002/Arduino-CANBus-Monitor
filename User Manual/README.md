@@ -62,3 +62,16 @@ Display only valid IDs.
 
 ![USBCAN-213](https://user-images.githubusercontent.com/6020549/86522620-a1ae8980-be9b-11ea-8afd-55145993f4da.jpg)   
 
+## Disable Configure
+![USBCAN-301](https://user-images.githubusercontent.com/6020549/86522644-1da8d180-be9c-11ea-89df-43e2cc41e040.jpg)   
+
+![USBCAN-303](https://user-images.githubusercontent.com/6020549/86522643-1c77a480-be9c-11ea-8987-f43d12fef22b.jpg)   
+
+
+# Send single frame
+![USBCAN-401](https://user-images.githubusercontent.com/6020549/86522649-21d4ef00-be9c-11ea-9834-763b0f663dc2.jpg)   
+
+![USBCAN-403](https://user-images.githubusercontent.com/6020549/86522645-20a3c200-be9c-11ea-9f61-e777b218aaaa.jpg)   
+
+![USBCAN-405](https://user-images.githubusercontent.com/6020549/86522647-213c5880-be9c-11ea-89ec-f5fcc99b5619.jpg)   
+
