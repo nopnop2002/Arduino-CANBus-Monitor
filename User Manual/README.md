@@ -44,4 +44,7 @@ For Extended frames, 29 bits are valid (range 0x00000000 to 0x1fffffff).
 ![USBCAN-121](https://user-images.githubusercontent.com/6020549/86522579-2e0c7c80-be9b-11ea-93c4-789fe90c7ba0.jpg)   
 
 ![USBCAN-123](https://user-images.githubusercontent.com/6020549/86522578-2cdb4f80-be9b-11ea-8382-a61c3e8d6bbf.jpg)   
+The left mouse button double click it.   
+
+
 
