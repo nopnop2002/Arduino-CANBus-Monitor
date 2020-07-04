@@ -46,5 +46,18 @@ For Extended frames, 29 bits are valid (range 0x00000000 to 0x1fffffff).
 ![USBCAN-123](https://user-images.githubusercontent.com/6020549/86522578-2cdb4f80-be9b-11ea-8382-a61c3e8d6bbf.jpg)   
 The left mouse button double click it.   
 
+## Configure Receive ID
+![USBCAN-201](https://user-images.githubusercontent.com/6020549/86522621-a2472000-be9b-11ea-9fcb-0f9617ee1cca.jpg)   
 
+![USBCAN-203](https://user-images.githubusercontent.com/6020549/86522613-9e1b0280-be9b-11ea-8b66-08c2d0242829.jpg)   
+
+![USBCAN-205](https://user-images.githubusercontent.com/6020549/86522615-9f4c2f80-be9b-11ea-9883-dad451b7c679.jpg)   
+
+![USBCAN-207](https://user-images.githubusercontent.com/6020549/86522616-9fe4c600-be9b-11ea-9f8c-7962921899fb.jpg)   
+
+![USBCAN-209](https://user-images.githubusercontent.com/6020549/86522618-a07d5c80-be9b-11ea-8cf0-9fb0095a5e1f.jpg)   
+
+![USBCAN-211](https://user-images.githubusercontent.com/6020549/86522619-a115f300-be9b-11ea-917d-a748f48b8154.jpg)   
+
+![USBCAN-213](https://user-images.githubusercontent.com/6020549/86522620-a1ae8980-be9b-11ea-8afd-55145993f4da.jpg)   
 
