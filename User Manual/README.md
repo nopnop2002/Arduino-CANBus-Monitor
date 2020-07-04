@@ -56,6 +56,7 @@ The left mouse button double click it.
 ![USBCAN-207](https://user-images.githubusercontent.com/6020549/86522616-9fe4c600-be9b-11ea-9f8c-7962921899fb.jpg)   
 
 ![USBCAN-209](https://user-images.githubusercontent.com/6020549/86522618-a07d5c80-be9b-11ea-8cf0-9fb0095a5e1f.jpg)   
+Display only valid IDs.   
 
 ![USBCAN-211](https://user-images.githubusercontent.com/6020549/86522619-a115f300-be9b-11ea-917d-a748f48b8154.jpg)   
 
