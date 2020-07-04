@@ -59,7 +59,7 @@ You can download from [here](https://github.com/coryjfowler/MCP_CAN_lib).
 - Start a Windows application.   
 
 # User manual
-See here.   
+See [here](https://github.com/nopnop2002/Arduino-CANBus-Monitor/tree/master/User%20Manual).   
 
 # Trouble shooting
 UNO hardware serial is used for USB communication.   
