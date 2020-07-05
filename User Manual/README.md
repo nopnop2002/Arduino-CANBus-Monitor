@@ -13,7 +13,7 @@ COM bps only supports 115200.
 Mode: This is not supported.   
 Only send once: This is not supported.   
 Manual set bps: This is not supported.   
-CAN baud rate: Some do not support it.   
+CAN bps: Some do not support it.   
 - [x] 1M   
 - [ ] 800K   
 - [x] 500K   
