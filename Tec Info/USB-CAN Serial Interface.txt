@@ -86,7 +86,7 @@ c= 0x4C
 
 * Send Standard Data Frame
 c= 0xAA
-c= 0xC8   -> Standard Data frame
+c= 0xC8   -> Standard Data frame. 8 bytes
 c= 0x23   -> FrameID[1]
 c= 0x01   -> FrameID[0]
 c= 0x11   -> FrameData[0]
@@ -101,7 +101,7 @@ c= 0x55   -> EndOfData
 
 * Send Standard Remote Frame
 c= 0xAA
-c= 0xD8   -> Standard Remote Frame
+c= 0xD8   -> Standard Remote Frame. 8 bytes
 c= 0x23
 c= 0x01
 c= 0x11
@@ -116,7 +116,7 @@ c= 0x55
 
 * Send Extended Data frame
 c= 0xAA
-c= 0xE8   -> Extended Data frame
+c= 0xE8   -> Extended Data frame. 8 bytes
 c= 0x7F   -> FrameID[3]
 c= 0x56   -> FrameID[2]
 c= 0x34   -> FrameID[1]
@@ -133,7 +133,7 @@ c= 0x55   -> EndOfData
 
 * Send Extended Remote frame
 c= 0xAA
-c= 0xF8   -> Extended Remote frame
+c= 0xF8   -> Extended Remote frame. 8 bytes 
 c= 0x7F
 c= 0x56
 c= 0x34
