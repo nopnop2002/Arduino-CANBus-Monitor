@@ -176,6 +176,13 @@ c= 0x65   -> ID[2-1]
 c= 0x87   -> ID[2-0]
 c= 0x76   -> CRC
 
+* Disable receive id
+c= 0xAA
+c= 0x55
+c= 0x10
+c= 0x00
+c= 0x10
+
 
 
 * Monitor
