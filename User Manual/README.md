@@ -9,7 +9,7 @@ COM bps only supports 115200.
 
 ![USBCAN-105](https://user-images.githubusercontent.com/6020549/86522285-7e351000-be96-11ea-8ffa-2d1fab7b71b8.jpg)   
 
-![USBCAN-107](https://user-images.githubusercontent.com/6020549/86522276-76756b80-be96-11ea-9075-be3b210b99a8.jpg)   
+![USBCAN-107](https://user-images.githubusercontent.com/6020549/86525420-daf9f000-bec1-11ea-8a02-2b15453e620a.jpg)   
 Mode: This is not supported.   
 Only send once: This is not supported.   
 Manual set bps: This is not supported.   
