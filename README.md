@@ -29,7 +29,7 @@ So, I made the hardware side with Arduino UNO+MCP2515 canbus module.
 Windows applications can be downloaded [here](https://github.com/SeeedDocument/USB-CAN_Analyzer/tree/master/res/USB-CAN%20software%20and%20drive(v7.10)/Program).
 
 - Arduino UNO   
-It also works on ATMega2560.   
+It also works on ATMega32u4 and ATMega2560.   
 
 - MPC2515 canbus module   
 You can get it from AliExpress or eBay for under $2.   
