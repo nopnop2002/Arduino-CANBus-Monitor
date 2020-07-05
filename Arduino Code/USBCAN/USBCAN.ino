@@ -246,7 +246,9 @@ void Set_and_Start(unsigned char *buffer, int buflen){
     mask = mask + (buffer[11] << 16);
     mask = mask + (buffer[10] << 8);
     mask = mask + buffer[9];
-    filter = (buffer[8] & 0x1F) << 24;
+
+    filter = (buffer[8] & 0x1F);
+    filter = filter << 24;
     filter = filter + (buffer[7] << 16);
     filter = filter + (buffer[6] << 8);
     filter = filter + buffer[5];
@@ -436,8 +438,7 @@ void loop() {
     unsigned char c = Serial.read();
 
 #if 0
-    mySerial.print("c=");
-    mySerial.print(" 0x");
+    mySerial.print("c=0x");
     if (c < 0x10) mySerial.print("0");
     mySerial.println(c,HEX);
 #endif
