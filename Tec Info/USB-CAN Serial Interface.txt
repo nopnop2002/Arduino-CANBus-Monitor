@@ -167,7 +167,7 @@ c= 0x77
 c= 0xFF
 c= 0x55
 
-# Fixed 20 bytes to send(Standard Frame) (V7.20 Only)
+# Fixed 20 bytes to send(Standard Frame) (V7.20 or later)
 c=0xAA
 c=0x55
 c=0x01  -> Fixed 20 bytes to send
@@ -190,7 +190,7 @@ c=0x00
 c=0xC6  -> CRC
 
 
-# Fixed 20 bytes to send(Extended Frame) (V7.20 Only)
+# Fixed 20 bytes to send(Extended Frame) (V7.20 or later)
 c=0xAA
 c=0x55
 c=0x01  -> Fixed 20 bytes to send
@@ -250,7 +250,7 @@ c= 0x10
 
 
 
-* Configure the receive ID(Receive ID not uploaded) (Added in Ver8.00)
+* Configure the receive ID(Receive ID not uploaded) (V8.00 or later)
 c=0xAA
 c=0x55
 c=0x11  -> Receive ID not uploaded
@@ -326,6 +326,7 @@ c=0x00
 c=0x00
 c=0x00
 c=0x32
+
 
 *Disable
 c=0xAA
