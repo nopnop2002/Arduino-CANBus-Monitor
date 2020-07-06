@@ -439,11 +439,10 @@ bool isValidId(unsigned long rxId){
 #if 0
   mySerial.print("isValidId config.counter=");
   mySerial.print(config.counter);
-  mySerial.print(" rxId=");
-  mySerial.println(rxId, HEX);
+  mySerial.println();
 #endif
   if (config.counter == 0) return true;
-  
+
   for(int i=0;i<config.counter;i++) {
 #if 0
     mySerial.print("rxId=0x");
@@ -452,9 +451,10 @@ bool isValidId(unsigned long rxId){
     mySerial.println(config.validId[i], HEX);
 #endif
     if (config.cmd == 0x10 && config.validId[i] == rxId) return true;
-    if (config.cmd == 0x11 && config.validId[i] != rxId) return true;
+    if (config.cmd == 0x11 && config.validId[i] == rxId) return false;
   }
-  return false;
+  if (config.cmd == 0x10) return false;
+  if (config.cmd == 0x11) return true;
 }
 
 void setup() {
