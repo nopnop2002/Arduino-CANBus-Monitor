@@ -1,5 +1,5 @@
 /*
- * 
+ * USB CAN for Arduino
  */
 #include <SoftwareSerial.h>
 #include <mcp_can.h>
@@ -19,12 +19,14 @@ unsigned long lastTime;
 
 #define MAX_VALID 20
 typedef struct {
+  unsigned char cmd;
   int counter;
   unsigned long validId[MAX_VALID];
 } CONFIG_t;
 
 CONFIG_t config;
 
+#define NOT_SUPPORT "This command does not support"
 
 unsigned char calcCRC(unsigned char *buffer, int length) {
   unsigned char calc = 0;
@@ -44,7 +46,8 @@ bool analyzeCommand(unsigned char c, unsigned char *buffer, int *buflen) {
   static int _len = 0;
   static int _last = 0;
   static unsigned char _crc = 0;
-
+  static bool _save = false;
+  
 #if 0 
   mySerial.print("_len=");
   mySerial.print(_len);
@@ -64,26 +67,32 @@ bool analyzeCommand(unsigned char c, unsigned char *buffer, int *buflen) {
     _len = 1;
     _status = 1;
     _cmd = 0;
+    _save = true;
     return false;
   } else if (_status == 1) {
     _cmd = c;
+    unsigned char _cmd0 = (c & 0x0F);
+    unsigned char _cmd1 = (c & 0xF0) >> 4;
+
+#if 0
+    mySerial.print("_cmd=");
+    mySerial.print(_cmd, HEX);
+    mySerial.print(" _cmd0=");
+    mySerial.print(_cmd0, HEX);
+    mySerial.print(" _cmd1=");
+    mySerial.print(_cmd1, HEX);
+    mySerial.println();
+#endif
+    
     if (_cmd == 0x55) {
       _crc = 0;
       _status = 2;
-    } else if (_cmd == 0xC8) { // Send Standard Data frame
-      _last = 13;
+    } else if (_cmd1 == 0xC || _cmd1 == 0xD) { // Send Standard frame
+      _last = _cmd0 + 5; //13;
       _crc = 0x55;
       _status = 9;
-    } else if (_cmd == 0xD8) { // Send Standard Remote Frame
-      _last = 13;
-      _crc = 0x55;
-      _status = 9;
-    } else if (_cmd == 0xE8) { // Send Extended Data frame
-      _last = 15;
-      _crc = 0x55;
-      _status = 9;
-    } else if (_cmd == 0xF8) { // Send Extended Remote frame
-      _last = 15;
+    } else if (_cmd1 == 0xE || _cmd1 == 0xF) { // Send Extended frame
+      _last = _cmd0 + 7; //15
       _crc = 0x55;
       _status = 9;
     }
@@ -97,7 +106,10 @@ bool analyzeCommand(unsigned char c, unsigned char *buffer, int *buflen) {
     } else if (c == 0x6) { // Change bps
       _last = 20;
       _status = 9;
-    } else if (c == 0x10) { // Configure Receive ID
+    } else if (c == 0x7) { // Transparent
+      _last = 20;
+      _status = 9;
+    } else if (c == 0x10 || c == 0x11) { // Configure Receive ID
       _status = 3;
     } else if (c == 0x12) { // Set and Start(auto)
       _last = 20;
@@ -105,6 +117,12 @@ bool analyzeCommand(unsigned char c, unsigned char *buffer, int *buflen) {
     } else if (c == 0x13) { // Set and Start(manual)
       _last = 20;
       _status = 9;
+    } else if (c == 0x30) { // Downlaod send (V8.0)
+      _status = 5;
+    } else if (c == 0x33) { // Downlaod reply (V8.0)
+      _status = 6;
+    } else if (c == 0x32 || c == 0x34) { // Enable/Disable (V8.0)
+      _status = 7;
     }
     buffer[_len] = c;
     _len++;
@@ -113,27 +131,56 @@ bool analyzeCommand(unsigned char c, unsigned char *buffer, int *buflen) {
     buffer[_len] = c;
     _len++;
     _status = 9;
-  } else {
+  } else if (_status == 5 || _status == 6) {
+    _last = c*18+6;
+    if (_status == 6) _last = c*20+6;
     buffer[_len] = c;
+    _len++;
+    _save = false; // not save 
+    _status = 9;
+  } else if (_status == 7) {
+    _last = 20;
+    buffer[_len] = c;
+    _len++;
+    _status = 9;
+  } else {
+    if (_save) buffer[_len] = c;
     _len++;
     //if (_cmd == 0x55 && _len == 20) {
     if (_len == _last) {
       _status = 0;
-      if (_crc == 0) {
-        _crc = calcCRC(&buffer[2], _len-3);
-      }
-      //mySerial.print("_crc=");
-      //mySerial.println(_crc,HEX);
-      if (_crc == c) {
-        *buflen = _len;
+      if (_save == true) {
+        if (_crc == 0) {
+          _crc = calcCRC(&buffer[2], _len-3);
+        }
+        //mySerial.print("_crc=");
+        //mySerial.println(_crc,HEX);
+        if (_crc == c) {
+          *buflen = _len;
+          return true; 
+        }
+      } else {
+        *buflen = 3;
         return true; 
       }
     }
   }
 }
 
-void Start_Monitor(unsigned char *buffer, int buflen){
-  mySerial.println("Start_Monitor");
+void Monitor(unsigned char recvError, unsigned char sendError, unsigned char *buffer, int buflen){
+  mySerial.println("Monitor");
+  buffer[0] = 0xAA;
+  buffer[1] = 0x55;
+  buffer[2] = 0x04;
+  buffer[3] = recvError;
+  buffer[4] = sendError;
+  buffer[5] = 0; // Error Flag(0:Normal/1;Error pas)
+  buffer[6] = 0; // Bus State(0:Bus-on/1:Bus-off)
+  for(int i=7;i<19;i++) buffer[i] = 0x00;
+  buffer[19] = calcCRC(&buffer[2], 17);
+  for(int i=0;i<20;i++) {
+    Serial.write(buffer[i]);
+  }
 }
 
 /*
@@ -216,8 +263,8 @@ void Set_and_Start(unsigned char *buffer, int buflen){
   mySerial.print("speed=");
   mySerial.println(speed);
   
+  //if(CAN0.begin(MCP_ANY, speed, MCP_8MHZ) == CAN_OK) {
   if(CAN0.begin(MCP_STDEXT, speed, MCP_8MHZ) == CAN_OK) {
-  //if(CAN0.begin(MCP_ANY, SPEED, MCP_8MHZ) == CAN_OK) {
     mySerial.println("MCP2515 Initialized Successfully!");
   } else {
     mySerial.println("Error Initializing MCP2515...");
@@ -270,12 +317,15 @@ void Set_and_Start(unsigned char *buffer, int buflen){
 void Configure_Receive_ID(unsigned char *buffer, int buflen){
   mySerial.print("Configure_Receive_ID counter=");
   mySerial.println(config.counter);
+  config.cmd = buffer[2];
   config.counter = buffer[3];
   unsigned long id;
+  unsigned long _id;
   for(int i=0;i<buffer[3];i++) {
-    id = buffer[i*4+7];
-    id = id << 24;
-    id = id + (buffer[i*4+6] << 16);
+    _id = (buffer[i*4+7] & 0x1F);
+    id = _id << 24;
+    _id = buffer[i*4+6];
+    id = id + (_id << 16);
     id = id + (buffer[i*4+5] << 8);
     id = id + buffer[i*4+4];
     //mySerial.print("id=0x");
@@ -284,50 +334,68 @@ void Configure_Receive_ID(unsigned char *buffer, int buflen){
   }
 
   for(int i=0;i<config.counter;i++) {
-    mySerial.print("validId=0x");
+    if (config.cmd == 0x10) mySerial.print("ValidId=0x");
+    if (config.cmd == 0x11) mySerial.print("InvalidId=0x");
     mySerial.println(config.validId[i], HEX);
   }
 }
   
-void Send_Standard_frame(unsigned char *buffer, int buflen){
+byte Send_Standard_frame(unsigned char frameType, byte frameLen, unsigned char *frameId, unsigned char *frameData){
   mySerial.print("Send_Standard_frame frameType=");
-  mySerial.println(buffer[1], HEX);
-  unsigned long stdID = (buffer[3] & 0x7);
+  mySerial.print(frameType, HEX);
+  mySerial.print(" frameLength=");
+  mySerial.println(frameLen);
+  
+  unsigned long stdID = (frameId[1] & 0x7);
   stdID = stdID << 8;
-  stdID = stdID + buffer[2];
-  if (buffer[1] == 0xD8) stdID = stdID | 0x40000000; // Remote Frame
-  byte data[8];
-  for(int i=0;i<8;i++) {
-    data[i] = buffer[i+4];
-  }
-  byte sndStat = CAN0.sendMsgBuf(stdID, 8, data);
-  if(sndStat = CAN_OK){
-    //mySerial.println("Message Sent Successfully!");
+  stdID = stdID + frameId[0];
+  if (frameType == 0xD) stdID = stdID | 0x40000000; // Remote Frame
+
+  byte sndStat = CAN0.sendMsgBuf(stdID, frameLen, frameData);
+  if(sndStat == CAN_OK){
+    mySerial.println("Message Sent Successfully!");
   } else {
-    mySerial.println("Error Sending Message...");
+    mySerial.print("**Error Sending Message.");
+    mySerial.print(sndStat);
+    mySerial.print(" ");
+    mySerial.print(stdID, HEX);
+    mySerial.print(" ");
+    mySerial.print(frameLen);
+    mySerial.println();
   }
+  return sndStat;
 }
 
-void Send_Extended_frame(unsigned char *buffer, int buflen){
+byte Send_Extended_frame(unsigned char frameType, byte frameLen, unsigned char *frameId, unsigned char *frameData){
   mySerial.print("Send_Extended_frame frameType=");
-  mySerial.println(buffer[1], HEX);
-  unsigned long extID = (buffer[5] & 0x1F);
+  mySerial.print(frameType, HEX);
+  mySerial.print(" frameLength=");
+  mySerial.println(frameLen);
+
+  unsigned long extID = (frameId[3] & 0x1F);
   extID = extID << 24;
-  extID = extID + (buffer[4] << 16);
-  extID = extID + (buffer[3] << 8);
-  extID = extID + buffer[2];
+  unsigned long uid;
+  uid = frameId[2];
+  extID = extID + (uid<< 16);
+  uid = frameId[1];
+  extID = extID + (uid << 8);
+  extID = extID + frameId[0];
   extID = extID | 0x80000000; // Extended Frame
-  if (buffer[1] == 0xF8) extID = extID | 0x40000000; // Remote Frame
-  byte data[8];
-  for(int i=0;i<8;i++) {
-    data[i] = buffer[i+6];
-  }
-  byte sndStat = CAN0.sendMsgBuf(extID, 8, data);
-  if(sndStat = CAN_OK){
-    //mySerial.println("Message Sent Successfully!");
+  if (frameType == 0xF) extID = extID | 0x40000000; // Remote Frame
+
+  byte sndStat = CAN0.sendMsgBuf(extID, frameLen, frameData);
+  if(sndStat == CAN_OK){
+    mySerial.println("Message Sent Successfully!");
   } else {
-    mySerial.println("Error Sending Message...");
+    mySerial.print("**Error Sending Message.");
+    mySerial.print(sndStat);
+    mySerial.print(" ");
+    mySerial.print(extID, HEX);
+    mySerial.print(" ");
+    mySerial.print(frameLen);
+    mySerial.println();
   }
+  return sndStat;
 }
 
 
@@ -340,8 +408,8 @@ void Receive_frame(unsigned char frameType, unsigned long rxId, unsigned char * 
   mySerial.println(rxLen);
 
   buffer[0] = 0xAA;
-  buffer[1] = frameType;
-  if (frameType == 0xC8 || frameType == 0xD8) {
+  buffer[1] = (frameType << 4) + rxLen;
+  if (frameType == 0xC || frameType == 0xD) {
     buffer[2] = rxId & 0xFF;
     buffer[3] = (rxId & 0x700) >> 8;
     for(int i=0; i<rxLen; i++){
@@ -351,7 +419,7 @@ void Receive_frame(unsigned char frameType, unsigned long rxId, unsigned char * 
     for(int i=0;i<rxLen+5;i++) {
       Serial.write(buffer[i]);
     }
-  } else if (frameType == 0xE8 || frameType == 0xF8) {
+  } else if (frameType == 0xE || frameType == 0xF) {
     buffer[2] = rxId & 0xFF;
     buffer[3] = (rxId & 0xFF00) >> 8;
     buffer[4] = (rxId & 0xFF0000) >> 16;
@@ -359,8 +427,8 @@ void Receive_frame(unsigned char frameType, unsigned long rxId, unsigned char * 
     for(int i=0; i<rxLen; i++){
       buffer[i+6] = rxBuf[i];
     }
-    buffer[14] = 0x55;
-    for(int i=0;i<15;i++) {
+    buffer[rxLen+6] = 0x55;
+    for(int i=0;i<rxLen+7;i++) {
       Serial.write(buffer[i]);
     }
     
@@ -383,7 +451,8 @@ bool isValidId(unsigned long rxId){
     mySerial.print(" validId=0x");
     mySerial.println(config.validId[i], HEX);
 #endif
-    if (config.validId[i] == rxId) return true;
+    if (config.cmd == 0x10 && config.validId[i] == rxId) return true;
+    if (config.cmd == 0x11 && config.validId[i] != rxId) return true;
   }
   return false;
 }
@@ -408,28 +477,42 @@ void loop() {
   unsigned char txBuf[8];
   char msgString[128];                        // Array to store serial string
 
+  unsigned char _cmd;
+  unsigned char _len;
+
+  byte _sndStat;
+  static unsigned char recvError = 0;
+  static unsigned char sendError = 0;
+
+
 #if 0  
   long now = millis();
   if (now - lastTime > 1000) {
     lastTime = now;
     mySerial.print("atmega328=");
-    mySerial.println(now);
+    mySerial.print(now);
+    mySerial.print(" ");
+    mySerial.print(recvError);
+    mySerial.print(" ");
+    mySerial.println(sendError);
+
+#if 0
     buffer[0] = 0xAA;
-    buffer[1] = 0xC8;
-    buffer[2] = 0x56;
-    buffer[3] = 0x01;
-    buffer[4] = 0xAA;
-    buffer[5] = 0x22;
-    buffer[6] = 0x33;
-    buffer[7] = 0x44;
-    buffer[8] = 0x55;
-    buffer[9] = 0x66;
-    buffer[10] = 0x77;
-    buffer[11] = 0xFF;
-    buffer[12] = 0x55;
-    for(int i=0;i<13;i++) {
+    buffer[1] = 0x55;
+    buffer[2] = 0x04;
+    buffer[3] = recvError;
+    buffer[4] = sendError;
+    buffer[5] = sendError % 10;
+    buffer[6] = sendError % 10;
+    for(int i=7;i<19;i++) buffer[i] = 0x00;
+    buffer[19] = calcCRC(&buffer[2], 17);
+    for(int i=0;i<20;i++) {
       Serial.write(buffer[i]);
     }
+#endif
+
+    recvError++;
+    sendError++;    
   }
 #endif
 
@@ -452,32 +535,54 @@ void loop() {
       mySerial.println("**");
       
       if (buffer[1] == 0x55) {
+        if (buffer[2] == 0x1) { // Fixed 20 bytes to send
+          if (buffer[3] == 1) { // Standard Frame
+            _cmd = 0xB + buffer[4];
+            _sndStat = Send_Standard_frame(_cmd, buffer[9], &buffer[5], &buffer[10]);
+            if (_sndStat != CAN_OK) sendError++;
+          } else {
+            _cmd = 0xD + buffer[4];
+            _sndStat = Send_Extended_frame(_cmd, buffer[9], &buffer[5], &buffer[10]);
+            if (_sndStat != CAN_OK) sendError++;
+          }
+        }
+        
         if (buffer[2] == 0x4) {
-          Start_Monitor(buffer, buflen);
-          startMonitor = !startMonitor;
+          Monitor(recvError, sendError, buffer, buflen);
+          //startMonitor = !startMonitor;
         }
-        if (buffer[2] == 0x06) {
-          mySerial.println("This command does not support");
+
+        if (buffer[2] == 0x06 || buffer[2] == 0x13
+         || buffer[2] == 0x30 || buffer[2] == 0x32 
+         || buffer[2] == 0x33 || buffer[2] == 0x34
+         || buffer[2] == 0x07) {
+          mySerial.println(NOT_SUPPORT);
         }
-        if (buffer[2] == 0x10) {
+
+        if (buffer[2] == 0x10 || buffer[2] == 0x11) { // Configure the receive ID
           Configure_Receive_ID(buffer, buflen);
         }
+
         if (buffer[2] == 0x12) {
           Set_and_Start(buffer, buflen);
           setupComplete = true;
+          startMonitor = true;
         }
-        if (buffer[2] == 0x13) {
-          mySerial.println("This command does not support");
+
+      } else {
+        _cmd = (buffer[1] & 0xF0) >> 4;
+        _len = (buffer[1] & 0x0F);
+        if (_cmd == 0xC || _cmd == 0xD) { // Standard Frame
+          _sndStat = Send_Standard_frame(_cmd, _len, &buffer[2], &buffer[4]);
+          if (_sndStat != CAN_OK) sendError++;
         }
+        if (_cmd == 0xE || _cmd == 0xF) { // Extended Frame
+          _sndStat = Send_Extended_frame(_cmd, _len, &buffer[2], &buffer[6]);
+          if (_sndStat != CAN_OK) sendError++;
+        }
+        
       }
 
-      if (buffer[1] == 0xC8 || buffer[1] == 0xD8) {
-        Send_Standard_frame(buffer, buflen);
-      }
-
-      if (buffer[1] == 0xE8 || buffer[1] == 0xF8) {
-        Send_Extended_frame(buffer, buflen);
-      }
 
     }
   } // end Serial.available
@@ -487,19 +592,29 @@ void loop() {
     {
       CAN0.readMsgBuf(&rxId, &rxLen, rxBuf);      // Read data: rxLen = data length, rxBuf = data byte(s)
 
+#if 0
+      mySerial.print("rxId=0x");
+      mySerial.print(rxId, HEX);
+      mySerial.print(" rxLen=");
+      mySerial.print(rxLen);
+      mySerial.println();
+#endif      
+
       unsigned char frameType;
       if((rxId & 0x80000000) == 0x80000000) {   // Determine if ID is standard (11 bits) or extended (29 bits)
         sprintf(msgString, "Extended ID: 0x%.8lX  DLC: %1d  Data:", (rxId & 0x1FFFFFFF), rxLen);
-        frameType = 0xE8; // Extended Data frame
+        //frameType = 0xE8; // Extended Data frame
+        frameType = 0xE; // Extended Data frame
       } else {
         sprintf(msgString, "Standard ID: 0x%.3lX       DLC: %1d  Data:", rxId, rxLen);
-        frameType = 0xC8; // Standard Data frame
+        //frameType = 0xC8; // Standard Data frame
+        frameType = 0xC; // Extended Data frame
       }
       mySerial.print(msgString);
     
       if((rxId & 0x40000000) == 0x40000000){    // Determine if message is a remote request frame.
         sprintf(msgString, " REMOTE REQUEST FRAME");
-        frameType = frameType + 0x10;
+        frameType = frameType + 0x1;
         mySerial.print(msgString);
       } else {
         for(byte i = 0; i<rxLen; i++){
