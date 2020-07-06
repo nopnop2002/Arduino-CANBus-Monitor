@@ -37,9 +37,6 @@ For Extended frames, 29 bits are valid (range 0x00000000 to 0x1fffffff).
 
 ![USBCAN-115](https://user-images.githubusercontent.com/6020549/86522280-7b3a1f80-be96-11ea-8999-0b9129bd92bf.jpg)   
 
-## Stop Monitor
-![USBCAN-113](https://user-images.githubusercontent.com/6020549/86522279-7a08f280-be96-11ea-97a3-021ed7c5f4a9.jpg)   
-
 
 ## View Detail
 ![USBCAN-121](https://user-images.githubusercontent.com/6020549/86522579-2e0c7c80-be9b-11ea-93c4-789fe90c7ba0.jpg)   
@@ -99,8 +96,14 @@ Display only valid IDs.
 
 ![USBCAN-613](https://user-images.githubusercontent.com/6020549/86522690-d838d400-be9c-11ea-8121-4b99af4d5f8b.jpg)   
 
+
+## Monitor Error Counter
+![USBCAN-651](https://user-images.githubusercontent.com/6020549/86579304-170f7c80-bfb8-11ea-92ee-15af6f244695.jpg)
+
+
 ## Grid control
 ![USBCAN-701](https://user-images.githubusercontent.com/6020549/86522723-49788700-be9d-11ea-99f6-3f0bcb08dd98.jpg)   
 
 ![USBCAN-703](https://user-images.githubusercontent.com/6020549/86522724-4aa9b400-be9d-11ea-9a31-1f2a9a0dfbc7.jpg)   
+
 
