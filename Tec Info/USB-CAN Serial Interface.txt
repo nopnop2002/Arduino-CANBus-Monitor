@@ -148,6 +148,52 @@ c= 0x77
 c= 0xFF
 c= 0x55
 
+# Fixed 20 bytes to send(Standard Frame) (V7.20 Only)
+c=0xAA
+c=0x55
+c=0x01  -> Fixed 20 bytes to send
+c=0x01  -> Frame Type(1:Standard)
+c=0x01  -> Request Type(1:Data frame/2:Remote frame)
+c=0xFF  -> FrameID[1]
+c=0x01  -> FrameID[0]
+c=0x00  -> NOT USED
+c=0x00  -> NOT USED
+c=0x04  -> frame length
+c=0x11  -> FrameData[0]
+c=0x22  -> FrameData[1]
+c=0x33  -> FrameData[2]
+c=0x44  -> FrameData[3]
+c=0x00  -> FrameData[4]
+c=0x00  -> FrameData[5]
+c=0x00  -> FrameData[6]
+c=0x00  -> FrameData[7]
+c=0x00
+c=0xC6  -> CRC
+
+
+# Fixed 20 bytes to send(Extended Frame) (V7.20 Only)
+c=0xAA
+c=0x55
+c=0x01  -> Fixed 20 bytes to send
+c=0x02  -> Frame Type(2:Extended)
+c=0x01  -> Request Type(1:Data frame/2:Remote frame)
+c=0x78  -> FrameID[3]
+c=0x56  -> FrameID[2]
+c=0x34  -> FrameID[1]
+c=0x12  -> FrameID[0]
+c=0x04  -> frame length
+c=0x11  -> FrameData[0]
+c=0x22  -> FrameData[1]
+c=0x33  -> FrameData[2]
+c=0x44  -> FrameData[3]
+c=0x00  -> FrameData[4]
+c=0x00  -> FrameData[5]
+c=0x00  -> FrameData[6]
+c=0x00  -> FrameData[7]
+c=0x00
+c=0xC6  -> CRC
+
+
 
 
 * Enable receive id
