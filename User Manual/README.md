@@ -98,7 +98,7 @@ Display only valid IDs.
 
 
 ## Monitor Error Counter
-![USBCAN-651](https://user-images.githubusercontent.com/6020549/86579304-170f7c80-bfb8-11ea-92ee-15af6f244695.jpg)
+![USBCAN-651](https://user-images.githubusercontent.com/6020549/86579304-170f7c80-bfb8-11ea-92ee-15af6f244695.jpg)   
 
 
 ## Grid control
