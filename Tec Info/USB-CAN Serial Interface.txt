@@ -1,5 +1,18 @@
-USB-CAN Serial Interface
+Windows Application
 
+V7.10
+https://github.com/SeeedDocument/USB-CAN_Analyzer/tree/master/res/USB-CAN%20software%20and%20drive(v7.10)/Program
+
+V7.20
+https://github.com/SeeedDocument/USB-CAN-Analyzer/tree/master/res/V7.20
+
+V8.00
+https://github.com/SeeedDocument/USB-CAN-Analyzer/tree/master/res/Program
+
+
+
+
+USB-CAN Serial Interface
 
 I referred to this.
 https://copperhilltech.com/blog/usbcan-analyzer-usb-to-can-bus-serial-protocol-definition/
