@@ -88,7 +88,7 @@ Display only valid IDs.
 
 ![USBCAN-605](https://user-images.githubusercontent.com/6020549/86522694-da029780-be9c-11ea-89e2-528a2779fd58.jpg)   
 
-![USBCAN-607](https://user-images.githubusercontent.com/6020549/86522686-d5d67a00-be9c-11ea-9a78-d0e45328bb4e.jpg)   
+![USBCAN-607](https://user-images.githubusercontent.com/6020549/86581499-1fb58200-bfbb-11ea-8ce7-3d79676d2130.jpg)   
 
 ![USBCAN-609](https://user-images.githubusercontent.com/6020549/86522687-d707a700-be9c-11ea-9f57-4deeb4618c65.jpg)   
 
