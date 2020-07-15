@@ -218,17 +218,20 @@ c=0xC6  -> CRC
 * Configure the receive ID(Only upload configured ID)
 c= 0xAA
 c= 0x55
+--- Start of CRC
 c= 0x10   -> Only upload configured ID
 c= 0x01   -> Number of Data
 c= 0x78   -> ID[1-3]
 c= 0x56   -> ID[1-2]
 c= 0x34   -> ID[1-1]
 c= 0x12   -> ID[1-0]
+--- End of CRC
 c= 0x25   -> CRC
 
 
 c= 0xAA
 c= 0x55
+--- Start of CRC
 c= 0x10
 c= 0x02   -> Number of Data
 c= 0x78   -> ID[1-3]
@@ -239,13 +242,17 @@ c= 0x21   -> ID[2-3]
 c= 0x43   -> ID[2-2]
 c= 0x65   -> ID[2-1]
 c= 0x87   -> ID[2-0]
+--- End of CRC
 c= 0x76   -> CRC
+
 
 * Disable receive id
 c= 0xAA
 c= 0x55
+--- Start of CRC
 c= 0x10
 c= 0x00
+--- End of CRC
 c= 0x10
 
 
@@ -275,6 +282,7 @@ c=0x11
 * Monitor request
 c= 0xAA
 c= 0x55
+--- Start of CRC
 c= 0x04    -> Monitor request
 c= 0x00
 c= 0x00
@@ -292,6 +300,7 @@ c= 0x00
 c= 0x00
 c= 0x00
 c= 0x00
+--- End of CRC
 c= 0x04   -> CRC
 
 
