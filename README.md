@@ -69,8 +69,10 @@ You can download from [here](https://github.com/coryjfowler/MCP_CAN_lib).
 - Write Arduino Code on UNO.   
 - Start a Windows application.   
 
-# User manual
+# Windows application User manual   
 See [here](https://github.com/nopnop2002/Arduino-CANBus-Monitor/tree/master/User%20Manual).   
+
+Official document is [here](https://github.com/SeeedDocument/USB-CAN-Analyzer/tree/master/res/Document).
 
 # Trouble shooting
 UNO hardware serial is used for USB communication.   
