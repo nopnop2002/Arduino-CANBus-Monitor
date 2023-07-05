@@ -39,7 +39,7 @@ Windows applications can be downloaded here.
 2. Arduino UNO   
 It also works on ATMega32u4 and ATMega2560.   
 
-3. MPC2515 canbus module   
+3. MCP2515 canbus module   
 You can get it from AliExpress or eBay for under $2.   
 ![MCP2515_CAN_MODULE](https://user-images.githubusercontent.com/6020549/86521994-7ffcd480-be92-11ea-9248-8a3f06a0ae2f.JPG)
 
