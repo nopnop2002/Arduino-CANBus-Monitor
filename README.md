@@ -74,10 +74,10 @@ See [here](https://github.com/nopnop2002/Arduino-CANBus-Monitor/tree/master/User
 
 Official document is [here](https://github.com/SeeedDocument/USB-CAN-Analyzer/tree/master/res/Document).
 
-# Trouble shooting
-UNO hardware serial is used for USB communication.   
-The Arduino-IDE serial monitor cannot be used.   
-UNO debugging uses software serial.   
+# Trouble shooting   
+Use hardware serial for USB communication.   
+Therefore, the Arduino-IDE serial monitor cannot be used.   
+Debug uses software serial.   
 ```
 SoftwareSerial mySerial(4, 5); // RX, TX
 ```
