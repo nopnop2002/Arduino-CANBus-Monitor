@@ -65,6 +65,7 @@ You can download from [here](https://github.com/coryjfowler/MCP_CAN_lib).
 
 # How to use
 
+- Add MCP2515 canbus module to CanBus.   
 - Write Arduino Code on UNO.   
 - Start a Windows application.   
 
