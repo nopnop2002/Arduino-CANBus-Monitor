@@ -84,3 +84,5 @@ SoftwareSerial mySerial(4, 5); // RX, TX
 ![USBCAN-Debug](https://user-images.githubusercontent.com/6020549/86526011-6d51c200-bec9-11ea-9588-002a8790f681.jpg)
 
 
+# Windows application User manual   
+Official document is [here](https://github.com/SeeedDocument/USB-CAN-Analyzer/tree/master/res/Document).   
